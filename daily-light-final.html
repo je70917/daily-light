@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Daily Light</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Noto+Sans+TC:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #F3F2EF;
+    --bg-deep: #EAE8E3;
+    --panel: #FFFFFF;
+    --panel-border: #E7E5E0;
+    --ink: #1C1C1C;
+    --ink-soft: #6E6E6E;
+    --ink-faint: #A3A19C;
+    --accent: #FF5A3C;
+    --accent-dim: #FFD3C4;
+  }
+
+  * { box-sizing: border-box; }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+  }
+
+  body {
+    background: var(--panel);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    position: relative;
+    overflow-x: hidden;
+  }
+
+  .wrap{
+    position: relative;
+    width: 100%;
+    max-width: none;
+    height: 100vh;
+    height: 100dvh;
+  }
+
+  .card{
+    position: relative;
+    background: var(--panel);
+    border: none;
+    border-radius: 0;
+    padding: calc(64px + env(safe-area-inset-top, 0px)) 32px calc(44px + env(safe-area-inset-bottom, 0px));
+    overflow: hidden;
+    box-shadow: none;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* single, restrained color pop */
+  .aurora{
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    mix-blend-mode: normal;
+    filter: blur(44px);
+  }
+
+  .glow{
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+  }
+
+  .aurora-a{
+    top: -25%;
+    left: -30%;
+    width: 90%;
+    height: 60%;
+    background: radial-gradient(circle at 35% 35%, var(--accent) 0%, var(--accent) 8%, transparent 65%);
+    opacity: 0.24;
+    animation: aurora-float-a 6s ease-in-out infinite alternate,
+               aurora-fade-a 6s ease-in-out infinite;
+  }
+
+  .aurora-b{
+    top: 20%;
+    right: -38%;
+    width: 98%;
+    height: 60%;
+    background: radial-gradient(circle at 65% 40%, #FFD23F 0%, #FFD23F 10%, transparent 65%);
+    opacity: 0;
+    animation: aurora-float-b 7s ease-in-out infinite alternate,
+               aurora-fade-b 7s ease-in-out infinite;
+  }
+
+  .aurora-c{
+    bottom: -30%;
+    left: -20%;
+    width: 100%;
+    height: 60%;
+    background: radial-gradient(circle at 50% 65%, #E0449E 0%, #E0449E 10%, transparent 65%);
+    opacity: 0;
+    animation: aurora-float-c 8s ease-in-out infinite alternate,
+               aurora-fade-c 8s ease-in-out infinite;
+  }
+
+  @keyframes aurora-float-a{
+    0%   { transform: translate(0px, 0px) scale(1) rotate(0deg); }
+    100% { transform: translate(55px, 80px) scale(1.25) rotate(14deg); }
+  }
+  @keyframes aurora-float-b{
+    0%   { transform: translate(28px, -40px) scale(0.94) rotate(0deg); }
+    100% { transform: translate(-65px, 55px) scale(1.28) rotate(-16deg); }
+  }
+  @keyframes aurora-float-c{
+    0%   { transform: translate(-40px, 40px) scale(1.06) rotate(0deg); }
+    100% { transform: translate(60px, -65px) scale(0.88) rotate(12deg); }
+  }
+
+  @keyframes aurora-fade-a{
+    0%, 100% { opacity: 0.24; }
+    50% { opacity: 0.08; }
+  }
+  @keyframes aurora-fade-b{
+    0%, 100% { opacity: 0.05; }
+    50% { opacity: 0.28; }
+  }
+  @keyframes aurora-fade-c{
+    0%, 100% { opacity: 0; }
+    50% { opacity: 0.26; }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .aurora{ animation: none; opacity: 0.25; }
+  }
+
+  .top-row{
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 34px;
+  }
+
+  .badge{
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    color: var(--ink-soft);
+    text-transform: uppercase;
+  }
+
+  .dot{
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--accent);
+    flex-shrink: 0;
+  }
+
+  .date-en{
+    position: relative;
+    z-index: 1;
+    font-weight: 500;
+    font-size: 15px;
+    color: var(--ink-faint);
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    line-height: 1.15;
+    text-align: center;
+  }
+
+  .date-zh{
+    position: relative;
+    font-family: 'Noto Sans TC', sans-serif;
+    font-weight: 500;
+    font-size: 13px;
+    color: var(--ink-faint);
+    margin-bottom: 30px;
+  }
+
+  .quote-en{
+    font-weight: 600;
+    font-size: 25px;
+    line-height: 1.45;
+    color: var(--ink);
+    letter-spacing: -0.005em;
+  }
+
+  .rule{
+    border: none;
+    border-top: 1px solid #D8D5CE;
+    width: 56px;
+    align-self: center;
+    margin: 26px 0;
+  }
+
+  .quote-zh{
+    font-family: 'Noto Sans TC', sans-serif;
+    font-weight: 400;
+    font-size: 19px;
+    line-height: 1.8;
+    color: var(--ink-soft);
+    letter-spacing: 0.01em;
+  }
+
+  .footer-row{
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-top: auto;
+    padding-top: 24px;
+  }
+
+  .middle{
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    flex: 1;
+  }
+
+  .footer-text{
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--ink-faint);
+    letter-spacing: 0.01em;
+  }
+
+  .below{
+    text-align: center;
+    margin-top: 20px;
+  }
+  .refresh-note{
+    color: var(--ink-faint);
+    font-size: 12px;
+  }
+
+  @media (max-width: 400px){
+    .card{ padding: 36px 24px 32px; }
+    .date-en{ font-size: 13px; }
+    .quote-en{ font-size: 22px; }
+    .quote-zh{ font-size: 17px; }
+  }
+
+  @media (prefers-reduced-motion: no-preference){
+    .card{ animation: settle 0.5s ease-out; }
+  }
+  @keyframes settle{
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <div class="card">
+    <div class="glow">
+      <div class="aurora aurora-a"></div>
+      <div class="aurora aurora-b"></div>
+      <div class="aurora aurora-c"></div>
+    </div>
+    <div class="date-en" id="dateEn"></div>
+    <div class="middle">
+      <div class="quote-en" id="quoteEn"></div>
+      <hr class="rule">
+      <div class="quote-zh" id="quoteZh"></div>
+    </div>
+    <div class="footer-row">
+      <div class="footer-text">one page, one day, one step forward</div>
+    </div>
+  </div>
+  <div class="below">
+    <div class="refresh-note">This updates itself tomorrow.</div>
+  </div>
+</div>
+
+<script>
+  const quotes = [
+    {en:"You are still here. That is not nothing — that is everything.", zh:"你還在這裡。這不是微不足道的小事——這就是一切。"},
+    {en:"What was taken from you does not get to decide what you're worth.", zh:"被奪走的東西,無權定義你的價值。"},
+    {en:"Rebuilding is slower than falling, but it is sturdier.", zh:"重建比倒塌要慢,但重建後的根基更穩。"},
+    {en:"You were not foolish for trusting. You were human.", zh:"你信任別人,不是因為傻,而是因為你有一顆真心。"},
+    {en:"The version of you a year from now is already being built, brick by brick, today.", zh:"一年後的你,正是從今天這一磚一瓦開始建起來的。"},
+    {en:"An ending is not proof that you did something wrong.", zh:"結束,並不代表你做錯了什麼。"},
+    {en:"Let today ask only one thing of you: one honest, small step.", zh:"今天,只要求自己做到一件事:誠實地邁出一小步。"},
+    {en:"Your worth was never on the payroll.", zh:"你的價值,從來不在工資單上。"},
+    {en:"Some doors close because a truer one is still being built.", zh:"有些門關上了,是因為更真實的那扇門還在建造之中。"},
+    {en:"You survived every hard day you thought you couldn't. All of them.", zh:"你以為熬不過去的每一天,你都熬過來了,一次都沒落下。"},
+    {en:"Healing is not a straight line, and you are still on the path.", zh:"療癒從來不是一條直線,而你仍然走在路上。"},
+    {en:"Being deceived is a wound, not a character flaw.", zh:"被欺騙是一道傷口,而不是性格上的缺陷。"},
+    {en:"You get to decide what this chapter means. No one else.", zh:"這一章的意義,由你自己來定義,別人說了不算。"},
+    {en:"Small steady mornings rebuild what sudden storms took down.", zh:"一個個平穩的清晨,能重新建起被暴風驟雨摧毀的一切。"},
+    {en:"The ground under you is more solid than it feels right now.", zh:"你腳下的土地,比此刻感覺到的更加堅實。"},
+    {en:"Trust again, slowly. Slowly still counts.", zh:"慢慢地,再次信任。慢,也算數。"},
+    {en:"You are allowed to rest before you are recovered.", zh:"哪怕還沒有完全恢復,你也有權利先休息一下。"},
+    {en:"A setback is information, not a verdict.", zh:"挫折是一個信息,不是最終的判決。"},
+    {en:"What you lost made room for what you haven't met yet.", zh:"失去的,是為了給還未遇見的東西騰出空間。"},
+    {en:"Your patience with yourself is doing more work than you can see.", zh:"你對自己的耐心,正在做著你看不見的功課。"},
+    {en:"The hardest year can still become the year you learned your own strength.", zh:"最難熬的一年,也可以成為你認清自己力量的一年。"},
+    {en:"You don't have to be unbroken to be moving forward.", zh:"你不必毫髮無損,也能繼續向前走。"},
+    {en:"Someone out there needed exactly the wisdom this year is teaching you.", zh:"這一年教會你的智慧,將來正好是別人需要的。"},
+    {en:"Every job you didn't get was a room you weren't meant to sit in yet.", zh:"沒得到的每一份工作,都是你此刻還不該走進的房間。"},
+    {en:"You are not behind. There is no schedule you're failing.", zh:"你沒有落後。根本不存在你必須追趕的時間表。"},
+    {en:"Let this be the year you learn who shows up, not just who leaves.", zh:"就讓這一年,教會你看清誰會留下,而不只是誰會離開。"},
+    {en:"Grief for what was unfair is still grief worth honoring.", zh:"為不公平的遭遇而悲傷,這份悲傷同樣值得被尊重。"},
+    {en:"Wisdom is often just a scar that learned to speak kindly.", zh:"智慧,常常只是一道學會了溫柔說話的傷疤。"},
+    {en:"You are the one constant that has carried you through all of it.", zh:"從頭到尾,唯一不變、一直支撐著你的人,就是你自己。"},
+    {en:"Today doesn't need to fix the whole year. It only needs to be today.", zh:"今天不必修復這一整年,它只需要好好地成為今天。"},
+    {en:"You can hold sorrow and hope in the same hand.", zh:"悲傷與希望,可以同時握在你的手心裡。"},
+    {en:"Nothing that was done to you gets the final word on your story.", zh:"別人對你做過的事,無權替你的人生故事寫下結局。"},
+    {en:"The quiet, undramatic days of rebuilding count just as much as the breakthroughs.", zh:"重建過程中平靜無奇的日子,和突破的時刻一樣重要。"},
+    {en:"You are learning a strength that easy years never would have taught you.", zh:"這份力量,是輕鬆的歲月永遠教不會你的。"},
+    {en:"Being cautious now is wisdom, not damage.", zh:"如今變得謹慎,是智慧,不是創傷留下的缺陷。"},
+    {en:"You get to write the next sentence, even on the days it's short.", zh:"哪怕這句話很短,你依然有權利寫下人生的下一句。"},
+    {en:"Not every loss is a lesson you owe gratitude for. Some are just losses, and that's allowed.", zh:"不是所有的失去都必須心懷感激地去學習,有些失去,就只是失去,這也是被允許的。"},
+    {en:"Your softness survived a year that could have hardened it completely. That matters.", zh:"你的溫柔,挺過了本可能讓它徹底變硬的一年,這一點很重要。"},
+    {en:"You don't owe anyone a comeback story on their timeline.", zh:"你沒有義務按照別人的時間表,交出一個東山再起的故事。"},
+    {en:"The people who lied to you do not get to live rent-free in your self-worth.", zh:"那些騙過你的人,不配繼續免費佔據你的自我價值。"},
+    {en:"A layoff is a business decision, not a verdict on your talent.", zh:"裁員是一個商業決定,不是對你才能的審判。"},
+    {en:"You are not your job title, and you never were.", zh:"你不是你的職稱,你從來都不是。"},
+    {en:"The gap on your resume is not a flaw in your story.", zh:"履歷上的空白期,不是你人生故事裡的瑕疵。"},
+    {en:"Rejections are not proof you're not enough. They're proof the right seat hasn't opened yet.", zh:"被拒絕不代表你不夠好,只代表屬於你的位置還沒出現。"},
+    {en:"It's okay to grieve a job you didn't even love. It was still yours.", zh:"即使那份工作你並不喜愛,失去它依然值得悲傷,因為它曾經是你的。"},
+    {en:"Searching for work is work. Give yourself credit for showing up to it.", zh:"找工作本身就是一份工作,請肯定自己每天為此付出的努力。"},
+    {en:"Your income changed. Your worth did not.", zh:"你的收入變了,但你的價值沒有變。"},
+    {en:"One closed chapter of your career does not cancel everything you built before it.", zh:"職涯中的一個篇章結束了,並不會抹去你之前建立的一切。"},
+  ];
+
+  function pad(n){ return n < 10 ? '0' + n : n; }
+
+  const now = new Date();
+  const start = new Date(now.getFullYear(), 0, 0);
+  const diff = now - start;
+  const dayOfYear = Math.floor(diff / (1000 * 60 * 60 * 24));
+
+  const idx = dayOfYear % quotes.length;
+  const todays = quotes[idx];
+
+  const weekdaysEn = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+  const monthsEn = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+
+  document.getElementById('dateEn').textContent = monthsEn[now.getMonth()] + " " + now.getDate();
+  document.getElementById('quoteEn').textContent = todays.en;
+  document.getElementById('quoteZh').textContent = todays.zh;
+</script>
+
+</body>
+</html>
