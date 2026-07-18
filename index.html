@@ -231,6 +231,8 @@
     align-items: center;
     text-align: center;
     flex: 1;
+    min-height: 0;
+    overflow-y: auto;
   }
 
   .footer-text{
@@ -238,15 +240,6 @@
     font-weight: 500;
     color: var(--ink-faint);
     letter-spacing: 0.01em;
-  }
-
-  .below{
-    text-align: center;
-    margin-top: 20px;
-  }
-  .refresh-note{
-    color: var(--ink-faint);
-    font-size: 12px;
   }
 
   @media (max-width: 400px){
@@ -283,9 +276,6 @@
     <div class="footer-row">
       <div class="footer-text">one page, one day, one step forward</div>
     </div>
-  </div>
-  <div class="below">
-    <div class="refresh-note">This updates itself tomorrow.</div>
   </div>
 </div>
 
