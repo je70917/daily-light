@@ -227,8 +227,7 @@
     align-items: center;
     justify-content: center;
     gap: 10px;
-    margin-top: auto;
-    padding-top: 24px;
+    padding-top: 8px;
   }
 
   .middle{
@@ -251,6 +250,30 @@
     letter-spacing: 0.01em;
   }
 
+  .back-leaf{
+    position: relative;
+    z-index: 1;
+    display: flex;
+    justify-content: center;
+    margin-top: auto;
+    background: none;
+    border: none;
+    padding: 6px;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .back-leaf svg{
+    width: 24px;
+    height: 34px;
+    display: block;
+    transition: transform 0.2s ease;
+  }
+
+  .back-leaf:active svg{
+    transform: scale(0.88);
+  }
+
   @media (max-width: 400px){
     .card{ padding: 36px 24px 32px; }
     .date-en{ font-size: 13px; }
@@ -258,7 +281,7 @@
     .quote-zh{ font-size: 17px; }
   }
 
-  .card{ opacity: 0; }
+  .card{ opacity: 0; transition: opacity 0.4s ease; }
   .card.is-revealed{ opacity: 1; }
 
   @media (prefers-reduced-motion: no-preference){
@@ -291,6 +314,7 @@
     position: absolute;
     inset: 0;
     background: var(--panel);
+    opacity: 0.92;
     -webkit-mask-image: radial-gradient(circle 95px at var(--reveal-x, -999px) var(--reveal-y, -999px), rgba(0,0,0,0) 0%, rgba(0,0,0,0) 55%, rgba(0,0,0,1) 100%);
     mask-image: radial-gradient(circle 95px at var(--reveal-x, -999px) var(--reveal-y, -999px), rgba(0,0,0,0) 0%, rgba(0,0,0,0) 55%, rgba(0,0,0,1) 100%);
   }
@@ -345,6 +369,11 @@
       transition: none;
     }
   }
+
+  .no-anim, .no-anim *{
+    transition: none !important;
+    animation: none !important;
+  }
 </style>
 </head>
 <body>
@@ -371,6 +400,12 @@
       <hr class="rule">
       <div class="quote-zh" id="quoteZh"></div>
     </div>
+    <button class="back-leaf" id="backLeaf" type="button" aria-label="Close letter and return to envelope">
+      <svg viewBox="0 0 28 40" xmlns="http://www.w3.org/2000/svg">
+        <path d="M14,4 C22,10 25,20 18,32 C16,36 12,36 10,32 C3,20 6,10 14,4 Z" fill="#A9BB93" fill-opacity="0.85" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M14,8 L14,30" stroke="#1C1C1C" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+    </button>
     <div class="footer-row">
       <div class="footer-text">one page, one day, one step forward</div>
     </div>
@@ -467,6 +502,25 @@
       openEnvelope();
     }
   });
+
+  function closeEnvelope(){
+    if (!envelope.classList.contains('is-open')) return;
+    card.classList.add('no-anim');
+    envelopeOverlay.classList.add('no-anim');
+    envelope.classList.add('no-anim');
+    card.classList.remove('is-revealed');
+    envelopeOverlay.classList.remove('is-hidden');
+    envelope.classList.remove('is-open');
+    void card.offsetWidth;
+    requestAnimationFrame(() => {
+      card.classList.remove('no-anim');
+      envelopeOverlay.classList.remove('no-anim');
+      envelope.classList.remove('no-anim');
+    });
+  }
+
+  const backLeaf = document.getElementById('backLeaf');
+  backLeaf.addEventListener('click', closeEnvelope);
 
   const wrap = document.querySelector('.wrap');
 
